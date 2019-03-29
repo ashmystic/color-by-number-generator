@@ -1,0 +1,123 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="This tool takes an image and automatically generates a a Mystery Mosaic / Color-by-Number activity page that you can print as a PDF and color.">
+    <meta name="robots" content="index, follow" />
+    <script type="text/javascript" src="javascript/script.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/dot-luv/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.2/jspdf.debug.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Inknut+Antiqua" rel="stylesheet">
+    <title>Mystery Mosaic Color-By-Number Generator</title>
+</head>
+
+<body>
+	<h1> Mystery Mosaic (Color-By-Number) Generator</h1>
+		<div class="instructions">
+			<h2>Three Easy Steps...</h2>
+			<div class="instructionStep">
+				<h3><span>1.</span> Upload a file</h3>
+				<img class="instructionImage" alt="Lamb Inpt Image" src="images/lamb_small.png">
+			</div>
+			<div class="instructionStep">
+				<h3><span>2.</span> Adjust settings</h3>
+				<img class="instructionImage" alt="Lamb Pixelated" src="images/lamb_40_4_1_color.png">
+			</div>
+			<div class="instructionStep">
+				<h3><span>3.</span> Print PDF and color!</h3>
+				<img class="instructionImage" alt="Lamb Partially Colored" src="images/lamb_40_4_1_partial.png">
+			</div>
+		</div>
+	<br>
+	<div class="wrapper">
+	    <div class="settings">
+				<fieldset class="block">
+				<legend>Upload File</legend>
+					<input id="inputFileUpload" type="file" name="file" class="ui-button" accept="image/*">
+					<br>
+					<output id="inputImage"></output>
+					<!-- <img id="scream" src="img_the_scream.jpg" alt="The Scream" style="display:none"> -->
+					<img id="image" alt="Blank Image Placeholder" style="display:none">
+
+					<div class="imagePreview">
+						<canvas id="inputCanvas">
+							Your browser does not support the HTML5 canvas tag.
+						</canvas>
+					</div>
+				</fieldset>
+
+				<fieldset class="block">
+				<legend>Settings</legend>
+					<span class="input-label">
+						Grid Size
+						<input type="number" id="inputFieldNumberCells" name="inputFieldNumberCells">
+					</span>
+					<div id="sliderNumberCells" class="slider"></div>
+					<span class="input-label">
+						Number of Colors
+						<input type="number" id="inputFieldNumberColors" name="inputFieldNumberColors">
+					</span>
+					<div id="sliderNumberColors" class="slider"></div>
+					<span class="input-label">
+						Adjust Colors
+						<input type="number" id="inputFieldColorTolerance" name="inputFieldColorTolerance">
+					</span>
+					<div id="sliderColorTolerance" class="slider"></div>
+				</fieldset>
+				<fieldset class="block">
+				<legend>Export</legend>
+						<input type="button" id="inputButtonGeneratePDF" name="inputButtonGeneratePDF" value="Generate PDF">
+						<br>
+						<br>
+						<div><b>Note:</b> you can also right click on the image preview and save it as a PNG file.</div>
+				</fieldset>
+	    </div>
+	    <div class="output"> 
+			<fieldset class="block">
+			<legend>Preview</legend>
+				<span class="input-label">
+					Number Grid
+				</span>
+				<label class="switch">
+					<input id="checkboxPreviewMode" type="checkbox" checked>
+					<span class="toggle round ui-widget-header"></span>
+				</label>
+				<span class="input-label">
+					Color
+				</span>
+				<div class="imagePreview">
+					<canvas id="outputCanvas">
+						Your browser does not support the HTML5 canvas tag.
+					</canvas>
+					<canvas id="colorSwatchCanvas">
+						Your browser does not support the HTML5 canvas tag.
+					</canvas>
+				</div>
+			</fieldset>
+			<br>
+	    </div>
+	</div>
+
+	<center>
+		<div class="donate-cta">
+			<h3>Please consider making a small donation to help keep this tool online!</h3>
+			<form action="https://www.paypal.com/cgi-bin/webscr" target="_blank" method="post" target="_top">
+				<input type="hidden" name="cmd" value="_s-xclick" />
+				<input type="hidden" name="hosted_button_id" value="Q8BNY489L8NKU" />
+				<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="Donate using Paypal, Debit or Credit Card" alt="Donate with PayPal button" />
+				<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+			</form>
+			<a href="https://venmo.com/Ash_Mystic" target="_blank"><img src="images/venmo_logo.png" title="Donate using the Venmo app" alt="Donate with Venmo button"></a>
+		</div>
+		<div id="about">
+			<h2>About</h2>
+			Created by <a href="http://www.ashmystic.com" target="_blank">ashmystic.com</a>
+			<br>
+			Built with <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API" target="_blank">HTML 5 Canvas</a>, <a href="https://jqueryui.com/" target="_blank">jQuery UI</a> and <a href="https://github.com/MrRio/jsPDF" target="_blank">jsPDF</a>
+		</div>
+	</center>
+</body>
+
+</html>
