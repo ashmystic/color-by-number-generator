@@ -30,7 +30,8 @@ h1 {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	color: #e4e4e4;
+	color: #e4e4e4;,
+	line-height: 2em;
 }
 .settings {
 	width: 400px;
@@ -61,6 +62,7 @@ h1 {
 		left: 40%;
 		transform: translate(-40%, -50%);
 		color: #e4e4e4;
+		line-height: 2em;
 	}
 }
 
