@@ -1,20 +1,28 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="This tool takes an image and automatically generates a a Mystery Mosaic / Color-by-Number activity page that you can print as a PDF and color.">
+    <meta name="description" content="This tool takes an image and automatically generates a Mystery Mosaic / Color-by-Number activity page that you can print as a PDF and color!">
     <meta name="robots" content="index, follow" />
     <script type="text/javascript" src="javascript/script.js"></script>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/dot-luv/jquery-ui.css">
 	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.2/jspdf.debug.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Inknut+Antiqua" rel="stylesheet">
     <title>Mystery Mosaic Color-By-Number Generator</title>
 </head>
 
 <body>
-	<h1> Mystery Mosaic (Color-By-Number) Generator</h1>
+	<div id="banner">
+	<h1>
+		Mystery Mosaic<br>
+		(Color-By-Number)<br>
+		Generator
+	</h1>
+	<img src="images/background_buddha.png">
+	</div>
 		<div class="instructions">
 			<h2>Three Easy Steps...</h2>
 			<div class="instructionStep">
@@ -34,7 +42,7 @@
 	<div class="wrapper">
 	    <div class="settings">
 				<fieldset class="block">
-				<legend>Upload File</legend>
+				<legend>1. Upload File</legend>
 					<input id="inputFileUpload" type="file" name="file" class="ui-button" accept="image/*">
 					<br>
 					<output id="inputImage"></output>
@@ -49,7 +57,7 @@
 				</fieldset>
 
 				<fieldset class="block">
-				<legend>Settings</legend>
+				<legend>2. Settings</legend>
 					<span class="input-label">
 						Grid Size
 						<input type="number" id="inputFieldNumberCells" name="inputFieldNumberCells">
@@ -67,11 +75,9 @@
 					<div id="sliderColorTolerance" class="slider"></div>
 				</fieldset>
 				<fieldset class="block">
-				<legend>Export</legend>
+				<legend>3. Export</legend>
 						<input type="button" id="inputButtonGeneratePDF" name="inputButtonGeneratePDF" value="Generate PDF">
-						<br>
-						<br>
-						<div><b>Note:</b> you can also right click on the image preview and save it as a PNG file.</div>
+						<input type="button" id="inputButtonSaveImage" name="inputButtonSaveImage" value="Save Image">
 				</fieldset>
 	    </div>
 	    <div class="output"> 
@@ -113,9 +119,11 @@
 		</div>
 		<div id="about">
 			<h2>About</h2>
-			Created by <a href="http://www.ashmystic.com" target="_blank">ashmystic.com</a>
+			Tool and website created by <a href="http://www.ashmystic.com" target="_blank">Ash Mystic</a>
 			<br>
 			Built with <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API" target="_blank">HTML 5 Canvas</a>, <a href="https://jqueryui.com/" target="_blank">jQuery UI</a> and <a href="https://github.com/MrRio/jsPDF" target="_blank">jsPDF</a>
+			<br>
+			<a href="https://github.com/ashmystic/color-by-number-generator" target="_blank">View Source Code</a>
 		</div>
 	</center>
 </body>

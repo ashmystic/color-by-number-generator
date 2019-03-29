@@ -34,6 +34,7 @@ function Color_By_Number_App () {
 	this.numberCells = 40;
 	this.numberCellsX = 0;
 	this.numberCellsY = 0;
+	this.cellLength = 0;
 
 	this.numberColors = 7;
 
@@ -209,19 +210,21 @@ Color_By_Number_App.prototype = {
 			app.setPreviewMode(event.target.checked);
 	    } );
 
+		const fileName = "color-by-number_"+app.inputFileName+"_s"+app.numberCells+"_n"+app.numberColors+"_c"+app.colorTolerance;
 		/*
 			UI to save image
 		*/
 		this.inputButtonSaveImage.button();
 		this.inputButtonSaveImage.click( function( event ) {
-	      // event.preventDefault();
-	      // console.log("save image");
+	      	app.setPreviewMode(true, 1000);
+			const image = app.previewContext.canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+			window.location.href=image;
 	    } );
 
 	    this.inputButtonGeneratePDF.button();
 		this.inputButtonGeneratePDF.click( function( event ) {
 			if(app.uniqueColorsArray.length > 0) {
-				app.generatePDF(app.previewContext, app.colorSwatchContext, "color-by-number_"+app.inputFileName+"_s"+app.numberCells+"_n"+app.numberColors+"_c"+app.colorTolerance+".pdf");
+				app.generatePDF(app.previewContext, app.colorSwatchContext, fileName+".pdf");
 			} else {
 				alert('Upload an image file first!');
 			}
@@ -281,11 +284,9 @@ Color_By_Number_App.prototype = {
 
 		var imgWidth, imgHeight;
 		if(imgAspectRatio > docAspectRatio) {
-			console.log("wider");
 			imgWidth = docWidth - 2*margin;
 			imgHeight = imgWidth / imgAspectRatio;
 		} else {
-			console.log("longer");
 			imgHeight = (docLength - 2*margin) / (1 + (imgAspectRatio / colorSwatchAspectRatio));
 			imgWidth = imgHeight * imgAspectRatio;
 		}
@@ -305,7 +306,7 @@ Color_By_Number_App.prototype = {
 
 		// Print color swatch key
 		const colorSwatchData = colorSwatchContext.canvas.toDataURL("image/jpeg", 1.0);
-		const colorSwatchHeight = imgWidth / colorSwatchAspectRatio * 2/3;
+		const colorSwatchHeight = (imgWidth / colorSwatchAspectRatio) / 2;
 		pdf.addImage(colorSwatchData, 'JPEG', margin, margin+imgHeight, imgWidth, colorSwatchHeight);
 
 		// Print footer text
@@ -325,6 +326,9 @@ Color_By_Number_App.prototype = {
 		this.pdfPrintFooter(pdf, margin, docLength - margin);
 
 		pdf.save(fileNameString);
+
+		// Revert size
+		this.setPreviewMode(true);
 	},
 
 	redraw: function(width) {
@@ -336,20 +340,18 @@ Color_By_Number_App.prototype = {
 			this.log('found image');
 			var aspectRatio = this.image.width / this.image.height;
 
-		  	this.previewContext.canvas.width = this.drawingWidth;
-		  	this.previewContext.canvas.height = this.drawingWidth / aspectRatio;
-
 		  	if(aspectRatio > 1) {
 		  		this.numberCellsY = this.numberCells;
 		  		this.numberCellsX = Math.ceil(this.numberCellsY * aspectRatio);
-
-		  		// const cellLength = this.previewContext.canvas.width / this.numberCellsX;
-		  		// this.previewContext.canvas.width = this.numberCellsX / cellLength;
-
 		  	} else {
 		  		this.numberCellsX = this.numberCells;
 		  		this.numberCellsY = Math.ceil(this.numberCellsX / aspectRatio);
 		  	}
+
+		  	this.cellLength = Math.floor(this.drawingWidth / this.numberCellsX);
+
+		  	this.previewContext.canvas.width = this.cellLength * this.numberCellsX;
+		  	this.previewContext.canvas.height = this.cellLength * this.numberCellsY;
 
 		  	this.log('NumberCells', this.numberCellsX + ', ' + this.numberCellsY);
 			this.drawImage(this.image, this.inputContext, this.previewContext, this.previewModeColor);
@@ -377,7 +379,6 @@ Color_By_Number_App.prototype = {
 	  	var frequencyMap = data[0];
 	  	var toleranceMap = data[1];
 	  	
-	  	var cellLength = Math.floor(previewContext.canvas.width / this.numberCellsX);
 
 	  	previewContext.clearRect(0, 0, previewContext.canvas.width, previewContext.canvas.height);
 		previewContext.fillStyle = '#EDEDED';
@@ -389,19 +390,19 @@ Color_By_Number_App.prototype = {
 
 	  			if(previewModeColor) {
 	  				previewContext.fillStyle = '#'+grid[x][y];
-		  			previewContext.fillRect(x*cellLength, y*cellLength, cellLength, cellLength);
+		  			previewContext.fillRect(x*this.cellLength, y*this.cellLength, this.cellLength, this.cellLength);
 	  			} else {
 	  				previewContext.fillStyle = '#FFFFFF';
-		  			previewContext.fillRect(x*cellLength, y*cellLength, cellLength, cellLength);
+		  			previewContext.fillRect(x*this.cellLength, y*this.cellLength, this.cellLength, this.cellLength);
 		  			
 	  				previewContext.strokeStyle = '#000000';
-	  				previewContext.strokeRect(x*cellLength, y*cellLength, cellLength, cellLength);
+	  				previewContext.strokeRect(x*this.cellLength, y*this.cellLength, this.cellLength, this.cellLength);
 
 		  			var number = this.getColorNumber(grid[x][y], this.uniqueColorsArray);
-		  			const fontSize = cellLength / 1.5;
+		  			const fontSize = this.cellLength / 1.5;
 		  			previewContext.font = fontSize+"px Arial";
 		  			previewContext.fillStyle = '#434343';
-					previewContext.fillText(number, x*cellLength+cellLength/2-previewContext.measureText(number).width/2, y*cellLength+2*cellLength/3);
+					previewContext.fillText(number, x*this.cellLength+this.cellLength/2-previewContext.measureText(number).width/2, y*this.cellLength+2*this.cellLength/3);
 		  		}
 	  		}
 	  	}
@@ -418,8 +419,9 @@ Color_By_Number_App.prototype = {
 		context.canvas.height = maxSwatchRadius*5;
 
 		context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-		context.fillStyle = '#EDEDED';
+		context.fillStyle = '#FFFFFF';
 		context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+
 		for(var x = 0; x < colorsArray.length; x++) {
 			const xPos = swatchRadius* (4/3) + x*(5/2)*swatchRadius;
 			context.beginPath();
