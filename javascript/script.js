@@ -40,7 +40,6 @@ function Color_By_Number_App () {
 
 	this.uniqueColorsArray = null;
 
-	// this.colorTolerance = 0x000512;
 	this.colorTolerance = 1;
 
 	this.previewModeColor = true;
@@ -69,9 +68,6 @@ function Color_By_Number_App () {
 	// Slider to control color tolerance
 	this.inputFieldColorTolerance = $("#inputFieldColorTolerance");
 	this.sliderColorTolerance = $("#sliderColorTolerance");
-	// this.colorToleranceMin = 0x000000;
-	// this.colorToleranceMax = 0x065536;
-	// this.colorToleranceStep = 0x000064;
 	this.colorToleranceMin = 1;
 	this.colorToleranceMax = 10;
 	this.colorToleranceStep = 1;
@@ -219,6 +215,9 @@ Color_By_Number_App.prototype = {
 	      	app.setPreviewMode(true, 1000);
 			const image = app.previewContext.canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
 			window.location.href=image;
+
+			// Revert size
+			app.setPreviewMode(true);
 	    } );
 
 	    this.inputButtonGeneratePDF.button();
@@ -242,9 +241,9 @@ Color_By_Number_App.prototype = {
 		if(width) {
 			this.drawingWidth = width;
 		} else if(window.innerWidth > 720) {
-			this.drawingWidth = window.innerWidth-500;
+			this.drawingWidth = window.innerWidth-450;
 		} else {
-			this.drawingWidth = window.innerWidth-50;
+			this.drawingWidth = window.innerWidth-120;
 		}
 	},
 
@@ -264,30 +263,31 @@ Color_By_Number_App.prototype = {
 		pdf.setFontSize(14);
 		pdf.setFont('Times');
 		pdf.setTextColor('#434343');
-		pdf.text('Created by Mystery Mosaic Color-By-Number Generator @ ASHMYSTIC.COM', x, y);
+		pdf.text('Created by ~ ashmystic.com/color-by-number-generator', x, y);
 	},
 
 	generatePDF: function(previewContext, colorSwatchContext, fileNameString) {
 
 		const margin = 20;
+		const colorSwatchHeight = 50;
 
 		const colorSwatchAspectRatio = colorSwatchContext.canvas.width / colorSwatchContext.canvas.height;
 		const imgAspectRatio = previewContext.canvas.width / previewContext.canvas.height;
-	
+
 		const orientationPortrait = imgAspectRatio <= 1;
 
 		// A4 dimensions: 595 x 842 pt = 8.27 × 11.69 inch @ 72 DPI
 		const docWidth = (orientationPortrait ? 595 : 842);
-		const docLength = (orientationPortrait ? 842 : 595);
+		const docHeight = (orientationPortrait ? 842 : 595);
 
-		const docAspectRatio = docWidth / docLength;
+		const docAspectRatio = docWidth / docHeight;
 
 		var imgWidth, imgHeight;
 		if(imgAspectRatio > docAspectRatio) {
 			imgWidth = docWidth - 2*margin;
 			imgHeight = imgWidth / imgAspectRatio;
 		} else {
-			imgHeight = (docLength - 2*margin) / (1 + (imgAspectRatio / colorSwatchAspectRatio));
+			imgHeight = docHeight - 2.0*margin - colorSwatchHeight;
 			imgWidth = imgHeight * imgAspectRatio;
 		}
 
@@ -295,7 +295,6 @@ Color_By_Number_App.prototype = {
 			unit: 'pt',
 			orientation: (orientationPortrait ? 'portrait' : 'landscape')
 		})
-
 		/*
 			Page 1
 		*/
@@ -306,11 +305,10 @@ Color_By_Number_App.prototype = {
 
 		// Print color swatch key
 		const colorSwatchData = colorSwatchContext.canvas.toDataURL("image/jpeg", 1.0);
-		const colorSwatchHeight = (imgWidth / colorSwatchAspectRatio) / 2;
-		pdf.addImage(colorSwatchData, 'JPEG', margin, margin+imgHeight, imgWidth, colorSwatchHeight);
+		pdf.addImage(colorSwatchData, 'JPEG', margin, margin+imgHeight+1);
 
 		// Print footer text
-		this.pdfPrintFooter(pdf, margin, docLength - margin);
+		this.pdfPrintFooter(pdf, margin, docHeight - margin/3);
 
 		/*
 			Page 2
@@ -323,7 +321,7 @@ Color_By_Number_App.prototype = {
 		pdf.addImage(previewColorData, 'JPEG', margin, margin, 300, 300 / imgAspectRatio);
 
 		// Print footer text
-		this.pdfPrintFooter(pdf, margin, docLength - margin);
+		this.pdfPrintFooter(pdf, margin, docHeight - margin/2);
 
 		pdf.save(fileNameString);
 
@@ -335,6 +333,7 @@ Color_By_Number_App.prototype = {
 		this.log('redraw');
 		this.setDrawingWidth(width);
 		this.uniqueColorsArray = new Array();
+
 
 		if(this.image.src) {
 			this.log('found image');
@@ -373,12 +372,9 @@ Color_By_Number_App.prototype = {
 
 	  	var initialFrequencyMapSorted = new Map([...initialFrequencyMap.entries()].sort());
 
-	//  	this.log('initialFrequencyMapSorted',initialFrequencyMapSorted);
-
 	  	var data = this.getMaps(initialFrequencyMapSorted, this.numberColors);
 	  	var frequencyMap = data[0];
 	  	var toleranceMap = data[1];
-	  	
 
 	  	previewContext.clearRect(0, 0, previewContext.canvas.width, previewContext.canvas.height);
 		previewContext.fillStyle = '#EDEDED';
@@ -411,12 +407,12 @@ Color_By_Number_App.prototype = {
 	drawColorSwatches: function(context, colorsArray) {
 		this.log('colorsArray', colorsArray);
 
-		const maxSwatchRadius = 20;
-		const yPos = maxSwatchRadius*2;
-		const swatchRadius = Math.min(maxSwatchRadius, (context.canvas.width / colorsArray.length) * (2/5));
+		context.canvas.width = this.previewContext.canvas.width;
+		context.canvas.height = context.canvas.width/5;
 
-		context.canvas.width = this.drawingWidth;
-		context.canvas.height = maxSwatchRadius*5;
+		const maxSwatchRadius = 20;
+		const swatchRadius = Math.min(maxSwatchRadius, (context.canvas.width / colorsArray.length) * (2/5));
+		const yPos = swatchRadius*1.5;
 
 		context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 		context.fillStyle = '#FFFFFF';
@@ -436,7 +432,7 @@ Color_By_Number_App.prototype = {
   			const fontSize = swatchRadius;
   			context.font = fontSize+"px Arial";
   			context.fillStyle = '#434343';
-			context.fillText(number, xPos - context.measureText(number).width/2, yPos*2);
+			context.fillText(number, xPos - context.measureText(number).width/2, swatchRadius*3.5);
 		}
 	},
 
@@ -450,7 +446,6 @@ Color_By_Number_App.prototype = {
 	  		grid.push(new Array());
 	  		for(var y = 0; y < this.numberCellsY; y++) {
 	  			var imageData = inputContext.getImageData(x*xStep, y*yStep, 1, 1);
-	  		//	this.log(imageData);
 
 	  			var dataHex = this.rgbToHex(imageData.data, false);
 
@@ -475,32 +470,24 @@ Color_By_Number_App.prototype = {
 		var toleranceFrequencyMapArray = [];
 		var i = 0;
 
-		// mapArr = [[150, 5],[148,2],[120,1],[56,6],[54,3],[50,1],[48,4]];
 		this.log('mapArr',mapArr);
 		this.log('mapArr.length',mapArr.length);
 
 		while(i < mapArr.length) {
-			// TODO fix algorithm
 			var entry = mapArr[i];
-			// this.log('entry',entry);
 			toleranceMap.set(entry[0], entry[0]);
 
 			if(i < mapArr.length - 1) {
 				var nextEntry = mapArr[i+1];
-				// this.log('nextEntry 1',nextEntry);
 
 				var color1 = '0x'+nextEntry[0];
 				var color2 = '0x'+entry[0];
 							while((i < mapArr.length - 1) && (Math.abs('0x'+(color1-color2).toString(16)) < this.colorTolerance*this.colorToleranceUIRatio)) {
-					// console.log('color diff: ' + color1 + ' - ' + color2 + ' = ' + (color1-color2) + ', < tolerance? ' + ('0x'+(color1-color2).toString(16) < this.colorTolerance));
-					// console.log('color diff: ' + color1 + ' - ' + color2 + ' = ' + Math.abs('0x'+(color1-color2).toString(16)) + ' < ' + this.colorTolerance);
-					entry = [entry[0], entry[1]+nextEntry[1]];
-					// this.log('newEntry',entry);
+				entry = [entry[0], entry[1]+nextEntry[1]];
 					toleranceMap.set(nextEntry[0], entry[0]);
 					i++;
 					if(i < mapArr.length - 1) {
 						nextEntry = mapArr[i+1];
-						// this.log('nextEntry 2',nextEntry);
 						color1 = '0x'+nextEntry[0];
 						color2 = '0x'+entry[0];
 					}
@@ -524,8 +511,6 @@ Color_By_Number_App.prototype = {
 		this.log('toleranceFrequencyMapArray.length',toleranceFrequencyMapArray.length);
 		this.log('step',step);
 		var frequencyMap = new Map();
-
-		// this.log('toleranceFrequencyMapArray', toleranceFrequencyMapArray);
 
 		/*
 			Get map of values

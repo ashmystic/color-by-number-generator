@@ -1,3 +1,6 @@
+/*
+	Main
+*/
 body {
 	background-color: #EDEDED!important;
 	margin: 8px!important;
@@ -8,7 +11,6 @@ body {
 
 canvas {
 	border:1px solid #d3d3d3;
-	/*width: 100px;*/
 }
 
 h1, h2, h3 {
@@ -33,37 +35,9 @@ h1 {
 	color: #e4e4e4;,
 	line-height: 2em;
 }
-.settings {
-	width: 400px;
-	float: left;
-	margin:left: 20px;
-}
-.output {
-	margin-left: 420px;
-}
-/* small screens  ----------- */
-@media only screen and (max-width : 720px) {
-/* Styles */
-	.settings {
-		width: 100%;
-		display: block;
-		margin: auto;
-	}
-	.output {
-		width: 100%;
-		display: block;
-		margin: auto;
-	}
-	h1 {
-		font-size:1.5em;
-		padding: 30px;
-		position: absolute;
-		top: 50%;
-		left: 40%;
-		transform: translate(-40%, -50%);
-		color: #e4e4e4;
-		line-height: 2em;
-	}
+
+fieldset {
+	margin-bottom: 15px;
 }
 
 fieldset.block {
@@ -81,6 +55,106 @@ fieldset.block legend.title2 {
     border-radius: 5px!important;
     box-shadow: 0 0 0 5px #ddd!important;
     margin-left: 20px!important;
+}
+
+.setting-one {
+  grid-area: setting-one;
+  overflow:hidden;
+}
+.setting-two {
+  grid-area: setting-two;
+}
+.setting-three {
+  grid-area: setting-three;
+}
+.preview {
+  grid-area: preview;
+}
+.settings-container {
+	display: grid;
+	grid-column-gap: 10px;
+	grid-template-columns: 330px auto;
+	grid-template-rows: auto;
+	grid-template-areas: 
+		"setting-one preview "
+		"setting-two preview"
+		"setting-three preview";
+}
+
+.instructions {
+	overflow:hidden;
+	background-color: #d3d3d3;
+	padding-top: 30px;
+	padding-bottom: 30px;
+	padding-left: 30px;
+}
+.instructionStep {
+	float:left;
+	margin-right: 10%;
+}
+.instructionStep span {
+	font-size: 1.5em;
+}
+.instructionStep h3 {
+	font-size:1em;
+	margin-top:0px;
+	margin-bottom:0px;
+}
+.instructionImage {
+	width:150px;
+}
+/* small screens  ----------- */
+@media only screen and (max-width : 720px) {
+	.settings-container {
+		display: grid;
+		grid-column-gap: 10px;
+		grid-template-columns: 90%;
+		grid-template-rows: auto;
+		grid-template-areas: 
+			"setting-one"
+			"setting-two"
+			"preview"
+			"setting-three";
+	}
+
+	h1 {
+		font-size:1.5em;
+		padding: 30px;
+		position: absolute;
+		top: 50%;
+		left: 40%;
+		transform: translate(-40%, -50%);
+		color: #e4e4e4;
+		line-height: 2em;
+	}
+
+	.instructionStep {
+		width: 100%;
+		display: block;
+		margin: 0 auto;
+	}
+	.instructionStep h3, .instructionStep img {
+		display: block;
+		margin: 0 auto;
+		text-align: center;
+	}
+	h3 {
+		text-align: center;
+	}
+}
+
+.slider {
+	margin: 15px;
+}
+
+
+.ui-button {
+	padding: 0.5em .5em !important;
+	font-size: 0.9em !important;
+}
+
+.imagePreview {
+	display: none;
 }
 
 .donate-cta {
@@ -101,71 +175,6 @@ form {
 form img {
 	width: 1px;
 	height: 1px;
-}
-
-.instructions {
-	overflow:hidden;
-	background-color: #d3d3d3;
-	padding-top: 30px;
-	padding-bottom: 30px;
-	padding-left: 30px;
-}
-.instructionStep {
-	width: 25%;
-	float:left;
-	/*margin-left: 30px;*/
-	margin-right: 30px;
-}
-/* small screens  ----------- */
-@media only screen and (max-width : 930px) {
-	.instructionStep {
-		width: 100%;
-		display: block;
-		margin: 0 auto;
-	}
-	.instructionStep h3, .instructionStep img {
-		display: block;
-		margin: 0 auto;
-		text-align: center;
-	}
-	h3 {
-		text-align: center;
-	}
-}
-.instructionStep span {
-	font-size: 1.5em;
-}
-.instructionStep h3 {
-	font-size:1em;
-	margin-top:0px;
-	margin-bottom:0px;
-}
-.instructionImage {
-	width:200px;
-}
-
-.slider {
-	margin: 15px;
-}
-
-
-.ui-button {
-	padding: 0.5em .5em !important;
-	font-size: 0.9em !important;
-}
-
-.imagePreview {
-	display: none;
-}
-
-fieldset {
-	margin-bottom: 15px;
-}
-
-.wrapper {
-	width: 100%;
-	overflow: hidden;
-	padding-top: 60px;
 }
 
 

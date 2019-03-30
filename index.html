@@ -23,64 +23,67 @@
 	</h1>
 	<img src="images/background_buddha.png">
 	</div>
-		<div class="instructions">
-			<h2>Create a relaxing meditation activity in three easy steps...</h2>
-			<div class="instructionStep">
-				<h3><span>1.</span> Upload a file</h3>
-				<img class="instructionImage" alt="Lamb Inpt Image" src="images/lamb_small.png">
-			</div>
-			<div class="instructionStep">
-				<h3><span>2.</span> Adjust settings</h3>
-				<img class="instructionImage" alt="Lamb Pixelated" src="images/lamb_40_4_1_color.png">
-			</div>
-			<div class="instructionStep">
-				<h3><span>3.</span> Print PDF and color!</h3>
-				<img class="instructionImage" alt="Lamb Partially Colored" src="images/lamb_40_4_1_partial.png">
-			</div>
+	<div class="instructions">
+		<h2>Create a relaxing meditation activity in three easy steps...</h2>
+		<div class="instructionStep">
+			<h3><span>1.</span> Upload a file</h3>
+			<img class="instructionImage" alt="Lamb Input Image" src="images/lamb_small.png">
 		</div>
+		<div class="instructionStep">
+			<h3><span>2.</span> Adjust settings</h3>
+			<img class="instructionImage" alt="Lamb Pixelated" src="images/lamb_40_4_1_color.png">
+		</div>
+		<div class="instructionStep">
+			<h3><span>3.</span> Print PDF and color!</h3>
+			<img class="instructionImage" alt="Lamb Partially Colored" src="images/lamb_40_4_1_partial.png">
+		</div>
+	</div>
 	<br>
-	<div class="wrapper">
-	    <div class="settings">
-				<fieldset class="block">
-				<legend>1. Upload File</legend>
-					<input id="inputFileUpload" type="file" name="file" class="ui-button" accept="image/*">
-					<br>
-					<output id="inputImage"></output>
-					<!-- <img id="scream" src="img_the_scream.jpg" alt="The Scream" style="display:none"> -->
-					<img id="image" alt="Blank Image Placeholder" style="display:none">
 
-					<div class="imagePreview">
-						<canvas id="inputCanvas">
-							Your browser does not support the HTML5 canvas tag.
-						</canvas>
-					</div>
-				</fieldset>
+	<section class="settings-container">
+		<div class="setting-one">
+			<fieldset class="block">
+			<legend>1. Upload File</legend>
+				<input id="inputFileUpload" type="file" name="file" class="ui-button" accept="image/*">
+				<br>
+				<output id="inputImage"></output>
+				<img id="image" alt="Blank Image Placeholder" style="display:none">
 
-				<fieldset class="block">
-				<legend>2. Settings</legend>
-					<span class="input-label">
-						Grid Size
-						<input type="number" id="inputFieldNumberCells" name="inputFieldNumberCells">
-					</span>
-					<div id="sliderNumberCells" class="slider"></div>
-					<span class="input-label">
-						Number of Colors
-						<input type="number" id="inputFieldNumberColors" name="inputFieldNumberColors">
-					</span>
-					<div id="sliderNumberColors" class="slider"></div>
-					<span class="input-label">
-						Adjust Colors
-						<input type="number" id="inputFieldColorTolerance" name="inputFieldColorTolerance">
-					</span>
-					<div id="sliderColorTolerance" class="slider"></div>
-				</fieldset>
-				<fieldset class="block">
-				<legend>3. Export</legend>
-						<input type="button" id="inputButtonGeneratePDF" name="inputButtonGeneratePDF" value="Generate PDF">
-						<input type="button" id="inputButtonSaveImage" name="inputButtonSaveImage" value="Save Image">
-				</fieldset>
-	    </div>
-	    <div class="output"> 
+				<div class="imagePreview">
+					<canvas id="inputCanvas">
+						Your browser does not support the HTML5 canvas tag.
+					</canvas>
+				</div>
+			</fieldset>				
+		</div>
+		<div class="setting-two">
+			<fieldset class="block">
+			<legend>2. Settings</legend>
+				<span class="input-label">
+					Grid Size
+					<input type="number" id="inputFieldNumberCells" name="inputFieldNumberCells">
+				</span>
+				<div id="sliderNumberCells" class="slider"></div>
+				<span class="input-label">
+					Number of Colors
+					<input type="number" id="inputFieldNumberColors" name="inputFieldNumberColors">
+				</span>
+				<div id="sliderNumberColors" class="slider"></div>
+				<span class="input-label">
+					Adjust Colors
+					<input type="number" id="inputFieldColorTolerance" name="inputFieldColorTolerance">
+				</span>
+				<div id="sliderColorTolerance" class="slider"></div>
+			</fieldset>
+		</div>
+		<div class="setting-three">
+			<fieldset class="block">
+			<legend>3. Export</legend>
+					<input type="button" id="inputButtonGeneratePDF" name="inputButtonGeneratePDF" value="Generate PDF">
+					<input type="button" id="inputButtonSaveImage" name="inputButtonSaveImage" value="Save Image">
+			</fieldset>
+		</div>
+		<div class="preview">
 			<fieldset class="block">
 			<legend>Preview</legend>
 				<span class="input-label">
@@ -102,9 +105,8 @@
 					</canvas>
 				</div>
 			</fieldset>
-			<br>
-	    </div>
-	</div>
+		</div>
+	</section>
 
 	<center>
 		<div class="donate-cta">
